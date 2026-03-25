@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #eef3f8;
+  --panel: #ffffff;
+  --text: #10131a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --focus: rgba(31, 111, 235, 0.16);
+  --chip: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --panel: #121c2e;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #334155;
+  --focus: rgba(56, 189, 248, 0.25);
+  --chip: #1f2937;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 5%, rgba(56, 189, 248, 0.2) 0%, transparent 24%),
+    radial-gradient(circle at 85% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 22%),
+    var(--bg);
+  color: var(--text);
+}
+
+.panel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-input {
+  width: 100%;
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 0.65rem 0.8rem;
+  font-size: 0.96rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #1f6feb;
+  box-shadow: 0 0 0 3px var(--focus);
+}
+
+.chip {
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--muted);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.theme-btn {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.gradient-title {
+  background: linear-gradient(95deg, #1f6feb, #0ea5e9 45%, #22c55e 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

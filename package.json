@@ -1,0 +1,18 @@
+{
+  "name": "ai-test-builder",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w @aitb/server\" \"npm run dev -w @aitb/web\" \"npm run dev -w @aitb/worker\"",
+    "build": "npm run build -w @aitb/server && npm run build -w @aitb/web && npm run build -w @aitb/worker",
+    "db:generate": "npm run prisma:generate -w @aitb/server",
+    "db:migrate": "npm run prisma:migrate -w @aitb/server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

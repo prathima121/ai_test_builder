@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TEACHER
+  ADMIN
+}
+
+enum ComplexityLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum GenerationStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum QuestionType {
+  MCQ
+  MAQ
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  role      Role       @default(TEACHER)
+  createdAt DateTime   @default(now())
+  syllabi   Syllabus[]
+}
+
+model Syllabus {
+  id        String         @id @default(uuid())
+  userId    String
+  title     String
+  rawText   String
+  grade     String
+  subject   String
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id])
+  topics    SyllabusTopic[]
+  runs      TestGenerationRun[]
+}
+
+model SyllabusTopic {
+  id                String   @id @default(uuid())
+  syllabusId        String
+  topicName         String
+  weight            Int      @default(10)
+  learningObjective String
+  syllabus          Syllabus @relation(fields: [syllabusId], references: [id])
+  questions         GeneratedQuestion[]
+}
+
+model TestGenerationRun {
+  id                     String           @id @default(uuid())
+  syllabusId             String
+  complexityLevel        ComplexityLevel
+  status                 GenerationStatus @default(QUEUED)
+  requestedQuestionCount Int
+  questionType           QuestionType
+  startedAt              DateTime?
+  finishedAt             DateTime?
+  errorMessage           String?
+  syllabus               Syllabus         @relation(fields: [syllabusId], references: [id])
+  test                   GeneratedTest?
+  logs                   AuditLog[]
+}
+
+model GeneratedTest {
+  id              String              @id @default(uuid())
+  runId           String              @unique
+  title           String
+  totalMarks      Int
+  durationMinutes Int
+  isPublished     Boolean             @default(false)
+  publishedAt     DateTime?
+  publishedBy     String?
+  createdAt       DateTime            @default(now())
+  run             TestGenerationRun   @relation(fields: [runId], references: [id])
+  questions       GeneratedQuestion[]
+  exports         TestExport[]
+}
+
+model GeneratedQuestion {
+  id            String       @id @default(uuid())
+  testId        String
+  topicId       String
+  questionText  String
+  questionType  QuestionType
+  optionsJson   Json
+  correctAnswer String
+  explanation   String
+  difficulty    ComplexityLevel
+  marks         Int
+  test          GeneratedTest @relation(fields: [testId], references: [id])
+  topic         SyllabusTopic @relation(fields: [topicId], references: [id])
+}
+
+model TestExport {
+  id        String   @id @default(uuid())
+  testId    String
+  format    String
+  fileUrl   String
+  createdAt DateTime @default(now())
+  test      GeneratedTest @relation(fields: [testId], references: [id])
+}
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  runId         String
+  modelName     String
+  promptVersion String
+  tokenUsage    Int
+  createdAt     DateTime @default(now())
+  run           TestGenerationRun @relation(fields: [runId], references: [id])
+}

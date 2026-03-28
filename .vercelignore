@@ -1,0 +1,6 @@
+apps/server
+apps/worker
+packages/shared/node_modules
+.git
+.env
+docker-compose.yml

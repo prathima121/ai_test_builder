@@ -28,10 +28,13 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: https://api.example.com
 
+      - name: Export to static
+        run: cd apps/web && npx next export -o out || true
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./apps/web/.next/standalone
+          path: ./apps/web/out
 
   deploy:
     needs: build

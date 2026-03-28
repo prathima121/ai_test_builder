@@ -3,8 +3,6 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
@@ -20,16 +18,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Generate Prisma Client
-        run: npm run db:generate
-
       - name: Build Next.js
         run: npm run build -w @aitb/web
         env:
           NEXT_PUBLIC_API_URL: https://api.example.com
 
-      - name: Export to static
-        run: cd apps/web && npx next export -o out || true
+      - name: Export static site
+        run: cd apps/web && npx next export -o out
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

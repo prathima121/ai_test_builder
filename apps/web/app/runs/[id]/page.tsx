@@ -5,6 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
+export async function generateStaticParams() {
+  return [];
+}
+
 type RunResponse = {
   id: string;
   status: "QUEUED" | "RUNNING" | "COMPLETED" | "FAILED";

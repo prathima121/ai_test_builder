@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   output: "export",
   basePath: "/ai_test_builder",
   assetPrefix: "/ai_test_builder/",
+  staticPageGenerationTimeout: 60,
 };
 
 export default nextConfig;
